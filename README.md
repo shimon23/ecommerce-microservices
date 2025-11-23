@@ -1,151 +1,276 @@
 # E-Commerce Microservices Platform
 
-![Status](https://img.shields.io/badge/status-in%20progress-yellow)
+![Status](https://img.shields.io/badge/status-production-green)
+![Azure](https://img.shields.io/badge/azure-AKS-blue)
 ![Python](https://img.shields.io/badge/python-3.11-blue)
-![Kubernetes](https://img.shields.io/badge/kubernetes-1.27-blue)
-![Helm](https://img.shields.io/badge/helm-3.13-blue)
+![Kubernetes](https://img.shields.io/badge/kubernetes-1.28-blue)
+![Terraform](https://img.shields.io/badge/terraform-IaC-purple)
 
-A production-ready microservices platform showcasing modern DevOps practices, cloud-native architecture, and full CI/CD pipeline implementation.
+> **Production-ready microservices platform deployed on Azure AKS, demonstrating modern DevOps practices, cloud-native architecture, and infrastructure as code.**
+
+[🎬 Live Demo](#) | [📖 Documentation](#documentation) | [🚀 Deployment Guide](#deployment)
+
+---
 
 ## 🎯 Project Overview
 
-This project demonstrates end-to-end DevOps workflow for a microservices-based e-commerce platform, from local development to cloud deployment on Azure AKS with comprehensive monitoring and GitOps practices.
+A complete end-to-end DevOps implementation showcasing:
+- 🏗️ **Infrastructure as Code** with Terraform
+- ☁️ **Cloud Deployment** on Azure AKS
+- 🐳 **Containerization** with Docker
+- ⎈ **Orchestration** with Kubernetes & Helm
+- 🔄 **CI/CD** workflows (in progress)
+- 📊 **Observability** & monitoring (planned)
+
+---
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                 Ingress Controller                  │
-│              (Nginx / Azure App Gateway)            │
-└─────────────────┬───────────────────────────────────┘
-                  │
-        ┌─────────┴─────────┐
-        │                   │
-┌───────▼────────┐  ┌──────▼─────────┐
-│ Product Service│  │ Order Service  │
-│  (Python/API)  │  │ (Python/API)   │
-│  Port: 8000    │  │ Port: 8001     │
-└───────┬────────┘  └──────┬─────────┘
-        │                   │
-        │    ┌──────────────┘
-        │    │  HTTP Communication
-        └────▼──────────────────────┐
-        │  Kubernetes Services      │
-        │  (Service Discovery)      │
-        └───────────────────────────┘
+                    ┌─────────────────────┐
+                    │   Azure Cloud       │
+                    │                     │
+    ┌───────────────┴──────────────────┐  │
+    │  Azure Kubernetes Service (AKS)  │  │
+    │  ┌────────────────────────────┐  │  │
+    │  │   Ingress Controller       │  │  │
+    │  └──────────┬─────────────────┘  │  │
+    │             │                     │  │
+    │    ┌────────┴────────┐            │  │
+    │    │                 │            │  │
+    │  ┌─▼──────────┐  ┌──▼─────────┐  │  │
+    │  │  Product   │  │   Order    │  │  │
+    │  │  Service   │  │  Service   │  │  │
+    │  │  (x2)      │  │   (x2)     │  │  │
+    │  └────────────┘  └────────────┘  │  │
+    │                                   │  │
+    └───────────────────────────────────┘  │
+    │                                      │
+    │  ┌──────────────────────────────┐   │
+    │  │ Azure Container Registry     │   │
+    │  │ (Docker Images)              │   │
+    │  └──────────────────────────────┘   │
+    │                                      │
+    │  ┌──────────────────────────────┐   │
+    │  │ Azure Key Vault              │   │
+    │  │ (Secrets Management)         │   │
+    │  └──────────────────────────────┘   │
+    └──────────────────────────────────────┘
 ```
 
 ### Microservices
 
-- **Product Service**: Manages product catalog (CRUD operations)
-- **Order Service**: Handles order processing, communicates with Product Service
+- **Product Service** (Port 8000): Product catalog management with CRUD operations
+- **Order Service** (Port 8001): Order processing with product validation via HTTP
 
-## 🛠️ Tech Stack
+---
 
-### Development
-- **Backend**: Python 3.11, FastAPI
-- **API Documentation**: Swagger/OpenAPI
-- **Containerization**: Docker, Multi-stage builds
+## 🛠️ Technology Stack
 
-### Orchestration & Deployment
-- **Container Orchestration**: Kubernetes
-- **Package Management**: Helm 3
-- **Local K8s**: Docker Desktop / Minikube
-- **Cloud Platform**: Azure AKS *(coming soon)*
+### Cloud & Infrastructure
+- **Cloud Platform**: Microsoft Azure
+- **Kubernetes**: Azure Kubernetes Service (AKS) - v1.28
+- **Container Registry**: Azure Container Registry (ACR)
+- **Secrets**: Azure Key Vault
+- **Networking**: Azure VNet, NSG, Load Balancer
+- **Monitoring**: Azure Log Analytics
 
 ### Infrastructure as Code
-- **IaC**: Terraform *(coming soon)*
-- **Cloud Resources**: Azure Container Registry, Azure Key Vault *(coming soon)*
+- **Terraform**: Infrastructure provisioning
+- **Helm 3**: Kubernetes package management
+- **Multi-environment**: Dev/Staging/Prod configurations
 
-### CI/CD & GitOps
-- **CI/CD**: GitHub Actions *(coming soon)*
-- **GitOps**: ArgoCD *(coming soon)*
-- **Image Registry**: Azure Container Registry *(coming soon)*
+### Application
+- **Language**: Python 3.11
+- **Framework**: FastAPI (async)
+- **API Docs**: Swagger/OpenAPI
+- **Containerization**: Docker (multi-stage builds)
 
-### Observability
-- **Metrics**: Prometheus *(coming soon)*
-- **Visualization**: Grafana *(coming soon)*
-- **Logging**: Azure Log Analytics *(coming soon)*
-- **APM**: Application Insights *(coming soon)*
+### DevOps Tools
+- **Version Control**: Git, GitHub
+- **Container Orchestration**: Kubernetes
+- **CI/CD**: GitHub Actions (in progress)
+- **GitOps**: ArgoCD (planned)
+
+---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Docker Desktop with Kubernetes enabled
-- Python 3.11+
+- Azure Subscription
+- Azure CLI (`az`)
+- Terraform (`>= 1.0`)
 - kubectl
 - Helm 3
-- Git
+- Docker
 
-### Local Development
+### Deploy to Azure
 
-#### 1. Clone the repository
+#### 1. Clone Repository
 ```bash
 git clone https://github.com/YOUR_USERNAME/ecommerce-microservices.git
 cd ecommerce-microservices
 ```
 
-#### 2. Run with Docker Compose (easiest)
+#### 2. Login to Azure
 ```bash
-# Build and start services
-docker-compose up --build
+az login
+az account set --subscription "YOUR_SUBSCRIPTION_ID"
+```
 
-# Access services
+#### 3. Deploy Infrastructure
+```bash
+cd infrastructure/terraform
+
+# Initialize Terraform
+terraform init
+
+# Deploy (10-15 minutes)
+terraform apply
+
+# Or use the helper script:
+./deploy.ps1  # Windows
+./deploy.sh   # Linux/Mac
+```
+
+#### 4. Connect to AKS
+```bash
+# Get AKS credentials
+az aks get-credentials \
+    --resource-group $(terraform output -raw resource_group_name) \
+    --name $(terraform output -raw aks_cluster_name)
+
+# Verify connection
+kubectl get nodes
+```
+
+#### 5. Build & Push Images
+```bash
+cd ../..
+
+# Login to ACR
+ACR_NAME=$(cd infrastructure/terraform && terraform output -raw acr_name)
+az acr login --name $ACR_NAME
+
+# Get ACR login server
+ACR_LOGIN_SERVER=$(cd infrastructure/terraform && terraform output -raw acr_login_server)
+
+# Build and push Product Service
+cd product-service
+docker build -t product-service:v1.0.0 .
+docker tag product-service:v1.0.0 $ACR_LOGIN_SERVER/product-service:v1.0.0
+docker push $ACR_LOGIN_SERVER/product-service:v1.0.0
+cd ..
+
+# Build and push Order Service
+cd order-service
+docker build -t order-service:v1.0.0 .
+docker tag order-service:v1.0.0 $ACR_LOGIN_SERVER/order-service:v1.0.0
+docker push $ACR_LOGIN_SERVER/order-service:v1.0.0
+cd ..
+```
+
+#### 6. Deploy Services
+```bash
+# Update Helm values with your ACR
+# Edit helm/*/values-azure.yaml and set your ACR name
+
+# Deploy with Helm
+helm install product-service ./helm/product-service \
+    -f ./helm/product-service/values-azure.yaml
+
+helm install order-service ./helm/order-service \
+    -f ./helm/order-service/values-azure.yaml
+
+# Check deployment
+kubectl get pods
+kubectl get svc
+```
+
+#### 7. Access Services
+```bash
+# Port-forward to access locally
+kubectl port-forward svc/product-service 8000:8000
+kubectl port-forward svc/order-service 8001:8001
+
+# Access Swagger UI
 # Product Service: http://localhost:8000/docs
 # Order Service: http://localhost:8001/docs
 ```
 
-#### 3. Run on Kubernetes (local)
+---
+
+## 💰 Cost Optimization
+
+The infrastructure includes cost-saving features:
+
+- **Single-node cluster** for development (~$30/month if running 24/7)
+- **Destroy/Deploy scripts** for daily usage (~$0.50/day)
+- **Auto-scaling disabled** in dev (enable for prod)
+- **Basic SKU** for ACR and other services
+
+### Daily Workflow
 ```bash
-# Ensure Kubernetes is running
-kubectl cluster-info
+# Morning - Start work
+cd infrastructure/terraform
+./deploy.ps1        # 10 minutes to create
 
-# Build Docker images
-cd product-service && docker build -t product-service:latest .
-cd ../order-service && docker build -t order-service:latest .
-cd ..
-
-# Deploy with Helm
-helm install product-service ./helm/product-service
-helm install order-service ./helm/order-service
-
-# Check deployment
-kubectl get pods
-
-# Access services (port-forward)
-kubectl port-forward svc/product-service 8000:8000
-kubectl port-forward svc/order-service 8001:8001
+# Evening - End work
+./destroy.ps1       # 5 minutes to destroy
+# Saves ~$2-4/day!
 ```
 
-### Testing the APIs
+---
 
-#### Product Service
+## 📊 Project Features
 
-```bash
-# Get all products
-curl http://localhost:8000/api/products
+### ✅ Completed
+- [x] Microservices architecture (2 services)
+- [x] FastAPI REST APIs with OpenAPI docs
+- [x] Docker containerization with multi-stage builds
+- [x] Local Kubernetes deployment
+- [x] Helm charts for package management
+- [x] Azure AKS production deployment
+- [x] Terraform infrastructure as code
+- [x] Azure Container Registry integration
+- [x] Azure Key Vault for secrets
+- [x] Health checks (liveness & readiness probes)
+- [x] Resource limits and requests
+- [x] High availability (2 replicas per service)
+- [x] Service discovery and inter-service communication
+- [x] Cost optimization scripts
 
-# Create a product
-curl -X POST http://localhost:8000/api/products \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Laptop", "price": 999.99, "stock": 50}'
-```
+### 🚧 In Progress
+- [ ] CI/CD pipeline with GitHub Actions
+- [ ] GitOps with ArgoCD
+- [ ] Prometheus & Grafana monitoring
+- [ ] Centralized logging
+- [ ] API Gateway / Ingress setup
+- [ ] SSL/TLS certificates
 
-#### Order Service
+---
 
-```bash
-# Create an order
-curl -X POST http://localhost:8001/api/orders \
-  -H "Content-Type: application/json" \
-  -d '{
-    "items": [{"product_id": 1, "quantity": 2}],
-    "customer_email": "test@example.com"
-  }'
+## 🎓 Key Learning Outcomes
 
-# Get all orders
-curl http://localhost:8001/api/orders
-```
+### Technical Skills
+- Infrastructure as Code with Terraform
+- Kubernetes orchestration at scale
+- Azure cloud services (AKS, ACR, Key Vault, VNet)
+- Container best practices (multi-stage builds, security)
+- Helm package management
+- Microservices communication patterns
+- DevOps workflows and automation
+
+### Production Practices
+- High availability configuration
+- Health monitoring and self-healing
+- Resource optimization
+- Security best practices (secrets management, network isolation)
+- Cost management strategies
+- Multi-environment deployments
+
+---
 
 ## 📁 Project Structure
 
@@ -153,82 +278,63 @@ curl http://localhost:8001/api/orders
 ecommerce-microservices/
 ├── product-service/           # Product microservice
 │   ├── main.py               # FastAPI application
-│   ├── requirements.txt      # Python dependencies
-│   └── Dockerfile            # Multi-stage Docker build
+│   ├── requirements.txt      
+│   └── Dockerfile            # Multi-stage build
 ├── order-service/            # Order microservice
-│   ├── main.py               # FastAPI application
-│   ├── requirements.txt      # Python dependencies
-│   └── Dockerfile            # Multi-stage Docker build
+│   ├── main.py
+│   ├── requirements.txt
+│   └── Dockerfile
+├── infrastructure/
+│   └── terraform/            # Infrastructure as Code
+│       ├── main.tf           # Resource group, workspace
+│       ├── aks.tf            # AKS cluster configuration
+│       ├── acr.tf            # Container registry
+│       ├── networking.tf     # VNet, subnets, NSG
+│       ├── keyvault.tf       # Secrets management
+│       ├── variables.tf      # Input variables
+│       ├── outputs.tf        # Output values
+│       ├── deploy.ps1        # Deployment script
+│       └── destroy.ps1       # Cleanup script
 ├── helm/                     # Helm charts
-│   ├── product-service/      # Product service chart
-│   │   ├── Chart.yaml
-│   │   ├── values.yaml       # Default values
-│   │   ├── values-dev.yaml   # Dev environment overrides
-│   │   ├── values-prod.yaml  # Production overrides
-│   │   └── templates/
-│   └── order-service/        # Order service chart
-│       └── ...
-├── k8s/                      # Raw Kubernetes manifests (reference)
 │   ├── product-service/
+│   │   ├── values.yaml       # Default values
+│   │   ├── values-azure.yaml # Azure-specific
+│   │   └── templates/
 │   └── order-service/
-├── infrastructure/           # Terraform IaC (coming soon)
-├── .github/workflows/        # CI/CD pipelines (coming soon)
-├── docker-compose.yml        # Local development
-└── README.md
+│       └── ...
+├── k8s/                      # Raw K8s manifests (reference)
+└── docker-compose.yml        # Local development
 ```
 
-## 🎓 Key Features & Best Practices
+---
 
-### DevOps Practices
-- ✅ **Infrastructure as Code**: Helm charts for K8s, Terraform for cloud *(coming)*
-- ✅ **Multi-stage Docker builds**: Optimized image sizes (~300MB vs 500MB+)
-- ✅ **Health checks**: Liveness and readiness probes
-- ✅ **Resource management**: CPU/Memory requests and limits
-- ✅ **High Availability**: 2+ replicas per service
-- ✅ **Service Discovery**: Kubernetes DNS for inter-service communication
-- ✅ **GitOps workflow**: Git as single source of truth *(coming)*
+## 🧪 Testing
 
-### Architecture Decisions
-- **Microservices pattern**: Independently deployable services
-- **API-first design**: Swagger/OpenAPI documentation
-- **Stateless services**: Horizontal scaling capability
-- **Container orchestration**: Kubernetes for production-grade deployment
-- **Secrets management**: Azure Key Vault integration *(coming)*
+### API Testing
 
-## 📊 Development Progress
+**Product Service:**
+```bash
+# Get all products
+curl http://localhost:8000/api/products
 
-### ✅ Completed (Week 1)
-- [x] Day 1: Product Service development
-- [x] Day 2: Order Service + Docker Compose
-- [x] Day 3: Kubernetes local deployment
-- [x] Day 4: Helm Charts implementation
+# Create product
+curl -X POST http://localhost:8000/api/products \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Laptop", "price": 999.99, "stock": 50}'
+```
 
-### 🚧 In Progress (Week 2)
-- [ ] Day 5-6: Terraform + Azure AKS infrastructure
-- [ ] Day 7: Azure Container Registry + Key Vault
-- [ ] Day 8-9: CI/CD pipeline with GitHub Actions
-- [ ] Day 10-11: GitOps with ArgoCD
-- [ ] Day 12-13: Monitoring stack (Prometheus + Grafana)
-- [ ] Day 14: Documentation & demo video
+**Order Service:**
+```bash
+# Create order
+curl -X POST http://localhost:8001/api/orders \
+  -H "Content-Type: application/json" \
+  -d '{
+    "items": [{"product_id": 1, "quantity": 2}],
+    "customer_email": "test@example.com"
+  }'
+```
 
-## 🎯 Learning Outcomes
-
-### Technical Skills Demonstrated
-- Container orchestration at scale
-- Infrastructure as Code (Helm, Terraform)
-- CI/CD pipeline design and implementation
-- Cloud-native architecture patterns
-- Microservices communication patterns
-- Kubernetes resource management
-- Multi-environment deployment strategies
-
-### Production Readiness
-- Health checks and self-healing
-- Resource optimization
-- High availability configuration
-- Security best practices
-- Observability and monitoring
-- Cost optimization strategies
+---
 
 ## 🔧 Troubleshooting
 
@@ -236,66 +342,81 @@ ecommerce-microservices/
 
 **Pods in ImagePullBackOff:**
 ```bash
-# Ensure images are built locally
-docker images | grep service
+# Check image exists in ACR
+az acr repository list --name $ACR_NAME
 
-# If using local images, verify imagePullPolicy: Never
-kubectl get deployment <service-name> -o yaml | grep imagePullPolicy
+# Verify AKS can pull from ACR
+az aks check-acr --name $AKS_NAME --resource-group $RG_NAME --acr $ACR_NAME.azurecr.io
 ```
 
 **Service communication fails:**
 ```bash
-# Check service discovery
+# Test from within cluster
 kubectl exec -it <pod-name> -- curl http://product-service:8000/health
 
-# Verify services exist
-kubectl get svc
+# Check service DNS
+kubectl exec -it <pod-name> -- nslookup product-service
 ```
 
-**Helm deployment fails:**
+**Terraform state issues:**
 ```bash
-# Lint charts before installing
-helm lint ./helm/product-service
+# Refresh state
+terraform refresh
 
-# Debug template rendering
-helm template product-service ./helm/product-service --debug
-
-# Check Helm release status
-helm list
-helm status product-service
+# If corrupted, import resources
+terraform import azurerm_resource_group.main /subscriptions/.../resourceGroups/...
 ```
+
+---
 
 ## 📚 Documentation
 
-- [API Documentation](http://localhost:8000/docs) - Swagger UI
-- [Architecture Decisions](./docs/architecture.md) *(coming soon)*
-- [Deployment Guide](./docs/deployment.md) *(coming soon)*
-- [Monitoring Guide](./docs/monitoring.md) *(coming soon)*
+- [Architecture Decisions](./docs/architecture.md) (coming soon)
+- [Deployment Guide](./docs/deployment.md) (coming soon)
+- [API Documentation](http://localhost:8000/docs) (Swagger)
+- [Monitoring Setup](./docs/monitoring.md) (coming soon)
+
+---
 
 ## 🤝 Contributing
 
 This is a personal learning project, but feedback and suggestions are welcome!
 
+---
+
 ## 📝 License
 
-MIT License - feel free to use this project for learning purposes.
+MIT License - feel free to use for learning purposes.
+
+---
 
 ## 👤 Author
 
 **DevOps Engineer**
-- Building modern cloud-native applications
-- Learning in public and documenting the journey
-- AWS Solutions Architect Associate certified
-- Preparing for CKA (Certified Kubernetes Administrator)
+- 🚀 Building production-ready cloud-native applications
+- ☁️ Azure & AWS certified
+- ⎈ Kubernetes enthusiast (CKA in progress)
+- 📚 Learning in public and documenting the journey
+
+**Connect:**
+- LinkedIn: [Shimon Hagag](https://www.linkedin.com/in/shimon-hagag/)
 
 ---
 
-## 🎬 Next Steps
+## 🎯 Project Status
 
-Currently working on:
-- Setting up Azure AKS infrastructure with Terraform
-- Implementing full CI/CD pipeline
-- Adding comprehensive monitoring and observability
+**Current Phase:** Production deployment on Azure AKS ✅  
+**Next Steps:** CI/CD automation, monitoring & observability  
+**Last Updated:** November 2024
 
-**Last Updated:** November 2024  
-**Status:** Active Development 🚀
+**Active Development:** This project is being actively developed with regular commits. Check back for updates!
+
+---
+
+## 💡 Acknowledgments
+
+Built with passion for DevOps and cloud-native technologies. Special thanks to the open-source community for the amazing tools and resources.
+
+---
+
+**⭐ If you find this project helpful, please consider giving it a star!**
