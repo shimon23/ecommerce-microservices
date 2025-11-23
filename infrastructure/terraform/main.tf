@@ -3,6 +3,11 @@ resource "random_string" "suffix" {
   length  = 6
   special = false
   upper   = false
+
+  keepers = {
+    # This ensures the suffix stays the same across destroy/apply
+    project = var.project_name
+  }
 }
 
 # Resource Group
