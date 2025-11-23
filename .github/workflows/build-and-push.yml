@@ -134,6 +134,14 @@ jobs:
           output: 'trivy-order-results.sarif'
 
       - name: Upload Trivy results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: '.'
+          sarif_file: 'trivy-product-results.sarif'
+        continue-on-error: true
+      
+      - name: Upload Trivy results for Order Service
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-order-results.sarif'
+          category: 'order-service'
+        continue-on-error: true
