@@ -1,0 +1,17 @@
+# Terraform
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+*.tfplan
+*.tfvars
+!terraform.tfvars.example
+
+# Sensitive
+*.pem
+*.key
+kubeconfig
+
+# OS
+.DS_Store
+Thumbs.db
